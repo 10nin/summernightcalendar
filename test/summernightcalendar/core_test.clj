@@ -2,6 +2,6 @@
   (:require [clojure.test :refer :all]
             [summernightcalendar.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest get-environment-value-test
+  (testing "get-environment-value"
+    (is (= (summernightcalendar.core/getenv "TERM") "xterm"))))

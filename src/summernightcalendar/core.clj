@@ -1,6 +1,12 @@
-(ns summernightcalendar.core)
+(ns summernightcalendar.core
+  (:require [clojure.java.jdbc :as jdbc]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn getenv [env-name]
+  (let [val (System/getenv env-name)]
+    (if (nil? val) "" val)))
+
+(def db-spec {:subprotocol "postgresql"
+              :subname (getenv "POSTGRES_PATH")
+              :user (getenv "POSTGRES_USER")
+              :password (getenv "POSTGRES_PASSWORD")
+              })
