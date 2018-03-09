@@ -1,15 +1,37 @@
 (ns summernightcalendar.core
-  (:require [clojure.java.jdbc :as jdbc]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [ring.adapter.jetty :as server]))
 
 (defn getenv [env-name]
   (let [val (System/getenv env-name)]
     (if (nil? val) "" val)))
+
+(defonce server (atom nil))
 
 (def db-spec {:subprotocol "postgresql"
               :subname (getenv "POSTGRES_PATH")
               :user (getenv "POSTGRES_USER")
               :password (getenv "POSTGRES_PASSWORD")
               })
+
+(defn handler [req]
+  {:status 200,
+   :headers {"Content-Type" "text/plain"}
+   :body "Hello World"})
+
+(defn start-server []
+  (when-not @server
+    (reset! server (server/run-jetty handler {:port 3000 :join? false}))))
+
+(defn stop-server []
+  (when @server
+    (.stop @server)
+    (reset! server nil)))
+
+(defn restart-server []
+  (when @server
+    (stop-server)
+    (start-server)))
 
 ;;-- record definition
 (defrecord group- [group-name password])

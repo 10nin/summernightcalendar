@@ -4,5 +4,6 @@
   :license {:name "MIT Licnese"
             :url "https://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.8.0"]
+                 [ring "1.6.3"]
                  [org.clojure/java.jdbc "0.7.5"]
                  [org.postgresql/postgresql "42.2.1"]])
