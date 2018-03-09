@@ -5,4 +5,4 @@
             :url "https://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/java.jdbc "0.7.5"]
-                 [org.postgresql/postgresql "42.2.1.jre7"]])
+                 [org.postgresql/postgresql "42.2.1"]])
