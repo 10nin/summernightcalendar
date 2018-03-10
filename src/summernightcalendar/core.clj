@@ -14,14 +14,36 @@
               :password (getenv "POSTGRES_PASSWORD")
               })
 
-(defn handler [req]
+(defn ok [body]
+  {:status 200
+   :body body})
+
+(defn html [res]
+  (assoc res :headers {"Content-Type" "text/html; charset=utf-8"}))
+
+(defn not-found []
+  {:status 404
+   :body "<h1>HTTP 404 : Page not found</h1>"})
+
+(defn home-handler [res]
   {:status 200,
    :headers {"Content-Type" "text/plain"}
-   :body "Hello World"})
+   :body "Hello, World"})
+
+(defn login-handler [res]
+  "Render login page and handling login event.")
+
+(defn list-handler [res]
+  "")
+
+(def routes
+  {"/" home-handler,
+   "/login" login-handler,
+   "/list" list-handler})
 
 (defn start-server []
   (when-not @server
-    (reset! server (server/run-jetty handler {:port 3000 :join? false}))))
+    (reset! server (server/run-jetty #'handler {:port 3000 :join? false}))))
 
 (defn stop-server []
   (when @server
@@ -56,8 +78,6 @@
   "Select :group calendar from GROUP_CALENDAR")
 
 ;;---- Web page handler ----
-(defn login-page-handler []
-  "Render login page and handling login event.")
 
 (defn monthly-calendar-handler [month]
   "Render :month calendar page")
