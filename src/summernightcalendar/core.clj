@@ -26,21 +26,33 @@
    :body "<h1>HTTP 404 : Page not found</h1>"})
 
 (defn home-handler [res]
-  {:status 200,
-   :headers {"Content-Type" "text/plain"}
-   :body "Hello, World"})
+  (-> (ok "Hello, World")
+      html))
 
 (defn login-handler [res]
-  "Render login page and handling login event.")
+  "Render login page and handling login event."
+    (-> (ok "This is a login page.")
+      html))
 
 (defn list-handler [res]
-  "")
+  ""
+    (-> (ok "This is a schedule list page.")
+      html))
 
 (def routes
   {"/" home-handler,
    "/login" login-handler,
    "/list" list-handler})
 
+(defn match-route [uri]
+  (get routes uri))
+
+(defn handler [req]
+  (let [uri (:uri req)
+        route-handler (match-route uri)]
+    (if route-handler
+      (route-handler req)
+      (not-found))))
 (defn start-server []
   (when-not @server
     (reset! server (server/run-jetty #'handler {:port 3000 :join? false}))))
