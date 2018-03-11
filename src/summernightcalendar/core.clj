@@ -1,6 +1,9 @@
 (ns summernightcalendar.core
   (:require [clojure.java.jdbc :as jdbc]
-            [ring.adapter.jetty :as server]))
+            [compojure.core :refer [defroutes context GET]]
+            [compojure.route :as route]
+            [ring.adapter.jetty :as server]
+            [ring.util.response :as res]))
 
 (defn getenv [env-name]
   (let [val (System/getenv env-name)]
@@ -14,45 +17,32 @@
               :password (getenv "POSTGRES_PASSWORD")
               })
 
-(defn ok [body]
-  {:status 200
-   :body body})
 
 (defn html [res]
-  (assoc res :headers {"Content-Type" "text/html; charset=utf-8"}))
-
-(defn not-found []
-  {:status 404
-   :body "<h1>HTTP 404 : Page not found</h1>"})
+  (res/content-type res "text/html; charset=utf-8"))
 
 (defn home-handler [res]
-  (-> (ok "Hello, World")
+  (-> (res/response "Hello, World")
       html))
 
 (defn login-handler [res]
   "Render login page and handling login event."
-    (-> (ok "This is a login page.")
+  (-> (res/response "This is a login page.")
       html))
 
 (defn list-handler [res]
   ""
-    (-> (ok "This is a schedule list page.")
+  (-> (res/response "This is a schedule list page.")
       html))
-
-(def routes
-  {"/" home-handler,
-   "/login" login-handler,
-   "/list" list-handler})
 
 (defn match-route [uri]
   (get routes uri))
 
-(defn handler [req]
-  (let [uri (:uri req)
-        route-handler (match-route uri)]
-    (if route-handler
-      (route-handler req)
-      (not-found))))
+(defroutes handler
+  (GET "/" req home-handler)
+  (GET "/login" req login-handler)
+  (GET "/list" req list-handler)
+  (route/not-found "<h1>HTTP 404 : Page not found</h1>"))
 (defn start-server []
   (when-not @server
     (reset! server (server/run-jetty #'handler {:port 3000 :join? false}))))
