@@ -2,6 +2,7 @@
   (:require [clojure.java.jdbc :as jdbc]
             [compojure.core :refer [defroutes context GET]]
             [compojure.route :as route]
+            [selmer.parser :as tmpl]
             [ring.adapter.jetty :as server]
             [ring.util.response :as res]))
 
@@ -17,6 +18,16 @@
               :password (getenv "POSTGRES_PASSWORD")
               })
 
+(defn get-first-day [year month]
+  "Get java.util.Calendar object of year/month/1."
+  (let [m (java.util.Calendar/getInstance)]
+    (.set m java.util.Calendar/YEAR year)
+    (.set m java.util.Calendar/MONTH (dec month))
+    (.set m java.util.Calendar/DATE 1)
+    m))
+
+(defn get-month-calendar [month]
+  nil)
 
 (defn html [res]
   (res/content-type res "text/html; charset=utf-8"))
