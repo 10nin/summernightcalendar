@@ -26,7 +26,15 @@
     (.set m java.util.Calendar/DATE 1)
     m))
 
-(defn get-month-calendar [month]
+(defn get-last-day [frist-day]
+  "Get last day at month of calendar."
+  (let [y- (.get calendar java.util.Calendar/YEAR)
+        m- (inc (.get calendar java.util.Calendar/MONTH))
+        c (get-first-day  y- m-)]
+    (.add c java.util.Calendar/DATE -1)
+    c))
+
+(defn get-month-calendar [calendar]
   nil)
 
 (defn html [res]
