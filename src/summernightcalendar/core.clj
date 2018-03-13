@@ -18,25 +18,6 @@
               :password (getenv "POSTGRES_PASSWORD")
               })
 
-(defn get-first-day [year month]
-  "Get java.util.Calendar object of year/month/1."
-  (let [m (java.util.Calendar/getInstance)]
-    (.set m java.util.Calendar/YEAR year)
-    (.set m java.util.Calendar/MONTH (dec month))
-    (.set m java.util.Calendar/DATE 1)
-    m))
-
-(defn get-last-day [frist-day]
-  "Get last day at month of calendar."
-  (let [y- (.get calendar java.util.Calendar/YEAR)
-        m- (inc (.get calendar java.util.Calendar/MONTH))
-        c (get-first-day  y- m-)]
-    (.add c java.util.Calendar/DATE -1)
-    c))
-
-(defn get-month-calendar [calendar]
-  nil)
-
 (defn html [res]
   (res/content-type res "text/html; charset=utf-8"))
 
