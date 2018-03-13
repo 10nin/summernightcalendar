@@ -29,3 +29,8 @@
 (defn get-monthly-days [last-day]
   (let [e (inc (get-day last-day))]
     (range 1 e)))
+
+(defn get-alignment-spaces [first-day]
+  "Get alignment balnk space list for calendar output."
+  (let [w (dec (.get first-day java.util.Calendar/DAY_OF_WEEK))]
+    (for [x (range (mod w 7))] "")))
