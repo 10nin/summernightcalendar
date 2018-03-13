@@ -22,6 +22,10 @@
 
 (defn get-last-day [calendar]
   "Get last day at month of calendar."
-  (let [c (get-first-day (get-year calendar) (get-month calendar))]
+  (let [c (get-first-day (get-year calendar) (inc (get-month calendar)))]
     (.add c java.util.Calendar/DATE -1)
     c))
+
+(defn get-monthly-days [last-day]
+  (let [e (inc (get-day last-day))]
+    (range 1 e)))
