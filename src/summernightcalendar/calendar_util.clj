@@ -2,7 +2,7 @@
 
 (defn get-date
   ([f calendar field] (f (.get calendar field)))
-  ([calendar field] (.get calendar field)))
+  ([calendar field] (get-date identity calendar field)))
 
 (defn get-year [calendar]
   (get-date calendar java.util.Calendar/YEAR))
