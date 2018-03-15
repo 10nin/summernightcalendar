@@ -4,7 +4,8 @@
             [compojure.route :as route]
             [selmer.parser :as tmpl]
             [ring.adapter.jetty :as server]
-            [ring.util.response :as res]))
+            [ring.util.response :as res]
+            [summernightcalendar.calendar-util :refer :all]))
 
 (defn getenv [env-name]
   (let [val (System/getenv env-name)]
