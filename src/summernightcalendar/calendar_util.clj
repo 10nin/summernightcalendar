@@ -25,10 +25,15 @@
   (doto (get-first-day (get-year calendar) (inc (get-month calendar)))
     (.add java.util.Calendar/DATE -1)))
 
-(defn get-monthly-days [last-day]
-  (range 1 (inc (get-day last-day))))
+(defn get-monthly-days
+  ([last-day] (vec (range 1 (inc (get-day last-day)))))
+  ([year month] (get-monthly-days (get-last-day (get-first-day year month)))))
 
 (defn get-alignment-spaces [first-day]
   "Get alignment balnk space list for calendar output."
   (let [w (dec (.get first-day java.util.Calendar/DAY_OF_WEEK))]
-    (for [x (range (mod w 7))] "")))
+    (vec (for [x (range (mod w 7))] ""))))
+
+(defn get-monthly-days-of-weeks [first-day]
+  (let [days (concat s (get-monthly-days (get-last-day first-day)))]
+    (partition 7 days)))
