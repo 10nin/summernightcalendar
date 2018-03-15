@@ -15,21 +15,18 @@
 
 (defn get-first-day [year month]
   "Get java.util.Calendar object of year/month/1."
-  (let [m (java.util.Calendar/getInstance)]
-    (.set m java.util.Calendar/YEAR year)
-    (.set m java.util.Calendar/MONTH (dec month))
-    (.set m java.util.Calendar/DATE 1)
-    m))
+  (doto (java.util.Calendar/getInstance)
+    (.set java.util.Calendar/YEAR year)
+    (.set java.util.Calendar/MONTH (dec month))
+    (.set java.util.Calendar/DATE 1)))
 
 (defn get-last-day [calendar]
   "Get last day at month of calendar."
-  (let [c (get-first-day (get-year calendar) (inc (get-month calendar)))]
-    (.add c java.util.Calendar/DATE -1)
-    c))
+  (doto (get-first-day (get-year calendar) (inc (get-month calendar)))
+    (.add java.util.Calendar/DATE -1)))
 
 (defn get-monthly-days [last-day]
-  (let [e (inc (get-day last-day))]
-    (range 1 e)))
+  (range 1 (inc (get-day last-day))))
 
 (defn get-alignment-spaces [first-day]
   "Get alignment balnk space list for calendar output."
