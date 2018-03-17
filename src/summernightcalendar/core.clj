@@ -22,18 +22,21 @@
 (defn html [res]
   (res/content-type res "text/html; charset=utf-8"))
 
+(defn calendar-view [res]
+  "This is a schedule list page.")
 (defn home-handler [res]
   (-> (res/response "Hello, World")
       html))
 
-(defn login-handler [res]
+(defn login-handler [req]
   "Render login page and handling login event."
   (-> (res/response "This is a login page.")
       html))
 
-(defn list-handler [res]
+(defn list-handler [req]
   ""
-  (-> (res/response "This is a schedule list page.")
+  (-> (calendar-view req)
+      res/response
       html))
 
 (defn match-route [uri]
