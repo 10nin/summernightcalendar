@@ -24,6 +24,7 @@
 
 (defn calendar-view [res]
   "This is a schedule list page.")
+
 (defn home-handler [res]
   (-> (res/response "Hello, World")
       html))
@@ -39,14 +40,15 @@
       res/response
       html))
 
-(defn match-route [uri]
-  (get routes uri))
-
 (defroutes handler
   (GET "/" req home-handler)
   (GET "/login" req login-handler)
   (GET "/list" req list-handler)
   (route/not-found "<h1>HTTP 404 : Page not found</h1>"))
+
+(defn match-route [uri]
+  (get handler uri))
+
 (defn start-server []
   (when-not @server
     (reset! server (server/run-jetty #'handler {:port 3000 :join? false}))))
