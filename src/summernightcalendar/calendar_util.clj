@@ -29,11 +29,20 @@
   ([last-day] (vec (range 1 (inc (get-day last-day)))))
   ([year month] (get-monthly-days (get-last-day (get-first-day year month)))))
 
-(defn get-alignment-spaces [first-day]
-  "Get alignment balnk space list for calendar output."
+(defn get-left-alignment-spaces [first-day]
+  "Get alignment balnk space list for month head."
   (let [w (dec (.get first-day java.util.Calendar/DAY_OF_WEEK))]
     (vec (for [x (range (mod w 7))] ""))))
 
+(defn get-right-alignment-spaces [last-day]
+  "Get alignment blank space list for month tail."
+  (let [w (.get last-day java.util.Calendar/DAY_OF_WEEK)]
+    (vec (for [x (range (- 7 w))] ""))))
+
 (defn get-monthly-days-of-weeks [first-day]
-  (let [days (concat s (get-monthly-days (get-last-day first-day)))]
-    (partition 7 days)))
+  (let [days (get-monthly-days (get-last-day first-day))]
+    (partition 7
+               (concat
+                (get-left-alignment-spaces first-day)
+                days
+                (get-right-alignment-spaces (get-last-day first-day))))))
