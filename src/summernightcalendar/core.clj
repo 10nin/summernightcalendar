@@ -43,7 +43,7 @@
 (defroutes handler
   (GET "/" req home-handler)
   (GET "/login" req login-handler)
-  (GET "/list" req list-handler)
+  (GET ["/list/:month" :month #"[0-9]+"] req list-handler)
   (route/not-found "<h1>HTTP 404 : Page not found</h1>"))
 
 (defn match-route [uri]
